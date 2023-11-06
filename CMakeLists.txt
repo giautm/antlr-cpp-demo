@@ -31,19 +31,19 @@ set(ANTLR_EXECUTABLE antlr-4.13.1-complete.jar)
 find_package(ANTLR REQUIRED)
 
 # Call macro to add lexer and grammar to your build dependencies.
-antlr_target(SampleGrammarLexer TSqlLexer.g4 LEXER
-             PACKAGE antlrcpptest)
-antlr_target(SampleGrammarParser TSqlParser.g4 PARSER
-             PACKAGE antlrcpptest
-             DEPENDS_ANTLR SampleGrammarLexer
-             COMPILE_FLAGS -lib ${ANTLR_SampleGrammarLexer_OUTPUT_DIR})
+antlr_target(TSqlGrammarLexer TSqlLexer.g4 LEXER
+             PACKAGE tsqlparser)
+antlr_target(TSqlGrammarParser TSqlParser.g4 PARSER
+             PACKAGE tsqlparser
+             DEPENDS_ANTLR TSqlGrammarLexer
+             COMPILE_FLAGS -lib ${ANTLR_TSqlGrammarLexer_OUTPUT_DIR})
 
 # include generated files in project environment
-include_directories(${ANTLR_SampleGrammarLexer_OUTPUT_DIR})
-include_directories(${ANTLR_SampleGrammarParser_OUTPUT_DIR})
+include_directories(${ANTLR_TSqlGrammarLexer_OUTPUT_DIR})
+include_directories(${ANTLR_TSqlGrammarParser_OUTPUT_DIR})
 
 # add generated grammar to demo binary target
 add_executable(demo main.cpp
-               ${ANTLR_SampleGrammarLexer_CXX_OUTPUTS}
-               ${ANTLR_SampleGrammarParser_CXX_OUTPUTS})
+               ${ANTLR_TSqlGrammarLexer_CXX_OUTPUTS}
+               ${ANTLR_TSqlGrammarParser_CXX_OUTPUTS})
 target_link_libraries(demo antlr4_static)
