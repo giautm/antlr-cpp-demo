@@ -13,15 +13,15 @@
 #include <iostream>
 
 #include "antlr4-runtime.h"
-#include "TLexer.h"
-#include "TParser.h"
+#include "TSqlLexer.h"
+#include "TSqlParser.h"
 
 using namespace antlrcpptest;
 using namespace antlr4;
 
 int main(int , const char **) {
-  ANTLRInputStream input(u8"🍴 = 🍐 + \"😎\";(((x * π))) * µ + ∰; a + (x * (y ? 0 : 1) + z);");
-  TLexer lexer(&input);
+  ANTLRInputStream input(u8"CREATE PROCEDURE HumanResources.uspGetEmployees\n    @LastName NVARCHAR(50),\n    @FirstName NVARCHAR(50)\nAS\n    SET NOCOUNT ON;\n    SELECT FirstName, LastName, JobTitle, Department\n    FROM HumanResources.vEmployeeDepartment\n    WHERE FirstName = @FirstName AND LastName = @LastName;");
+  TSqlLexer lexer(&input);
   CommonTokenStream tokens(&lexer);
 
   tokens.fill();
@@ -29,8 +29,8 @@ int main(int , const char **) {
     std::cout << token->toString() << std::endl;
   }
 
-  TParser parser(&tokens);
-  tree::ParseTree *tree = parser.main();
+  TSqlParser parser(&tokens);
+  tree::ParseTree *tree = parser.tsql_file();
 
   std::cout << tree->toStringTree(&parser) << std::endl;
 
